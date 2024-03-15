@@ -5,9 +5,18 @@
 
 <body>
 <iframe id="player" type="text/html"
-        src="https://www.youtube.com/embed/lM02vNMRRB0?enablejsapi=1" allowfullscreen></iframe>
+        src="" allowfullscreen></iframe>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoRef = urlParams.get('video');
+    const videoURL = "https://www.youtube.com/embed/"+videoRef+"?enablejsapi=1";
+
+    const iframe = document.getElementById("player");
+
+    // Set the iframe's src attribute using the variable
+    iframe.src = videoURL;
+
     // Create a reference to the YouTube player object
     var player;
 
