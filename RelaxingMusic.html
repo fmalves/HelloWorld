@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random YouTube Start Time - Fullscreen</title>
+    <link rel="stylesheet" type="text/css" href="RelaxingMusic.css">
+<body>
+<iframe id="player" type="text/html"
+        src="https://www.youtube.com/embed/lM02vNMRRB0?enablejsapi=1" allowfullscreen></iframe>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    // Create a reference to the YouTube player object
+    var player;
+
+    // Function called when YouTube iframe API is ready
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        events: {
+          'onReady': onPlayerReady
+       }
+      });
+    }
+
+    // Function called when the player is ready
+    function onPlayerReady(event) {
+      // Get the video duration
+      var videoDuration = event.target.getDuration();
+
+      // Generate a random start time within the video duration
+      var randomStartTime = Math.floor(Math.random() * videoDuration);
+
+      // Seek to the random start time
+      player.seekTo(randomStartTime);
+
+      // Enter fullscreen mode (requires user interaction first)
+      player.requestFullscreen();
+
+      // Disable user interaction with the video (after entering fullscreen)
+      player.setOption('controls', 0);
+
+      // Play the video automatically
+      event.target.playVideo();
+
+      // Mute the video (optional)
+      event.target.mute();
+
+      event.player.disableSeek(); // Disable progress bar scrubbing
+
+
+      // Function to prevent user from pausing/stopping the video (loop playback)
+      var intervalId = setInterval(function() {
+        if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
+          event.target.playVideo();
+        }
+      }, 1000); // Check every second
+
+      // Get the iframe window object
+      var iframeWindow = iframe.contentWindow;
+
+      // Disable user interaction by capturing clicks on the iframe
+      iframeWindow.document.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default behavior (clicking controls)
+      });
+
+    }
+
+    // Load the YouTube iframe API asynchronously
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
+</body>
+</html>
+
+
