@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Random YouTube Start Time - Fullscreen</title>
+    <meta id="meta-description" http-equiv="refresh" content="">
+</head>
 <body>
 <iframe id="player" type="text/html"
-        width="1920"
-        height="1080"
+        width="0"
+        height="0"
         src="" allowfullscreen></iframe>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const videoRef = urlParams.get('video');
     const videoURL = "https://www.youtube.com/embed/"+videoRef+"?enablejsapi=1";
-
     const iframe = document.getElementById("player");
 
     // Set the iframe's src attribute using the variable
@@ -42,7 +42,7 @@
       player.seekTo(randomStartTime);
 
       // Enter fullscreen mode (requires user interaction first)
-      player.requestFullscreen();
+      // player.requestFullscreen();
 
       // Disable user interaction with the video (after entering fullscreen)
       player.setOption('controls', 0);
@@ -51,27 +51,15 @@
       event.target.playVideo();
 
       // Mute the video (optional)
-      event.target.mute();
+      // event.target.mute();
 
-      event.player.disableSeek(); // Disable progress bar scrubbing
+      // event.player.disableSeek(); // Disable progress bar scrubbing
 
+      const videoURLRandomStart = "1;url=https://www.youtube.com/watch?v=" + videoRef + "&t=" + randomStartTime;
+      const metaDescription = document.getElementById("meta-description");
+      metaDescription.content = videoURLRandomStart;
 
-      // Function to prevent user from pausing/stopping the video (loop playback)
-      var intervalId = setInterval(function() {
-        if (event.target.getPlayerState() !== YT.PlayerState.PLAYING) {
-          event.target.playVideo();
-        }
-      }, 1000); // Check every second
-
-      // Get the iframe window object
-      var iframeWindow = iframe.contentWindow;
-
-      // Disable user interaction by capturing clicks on the iframe
-      iframeWindow.document.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default behavior (clicking controls)
-      });
-
-    }
+    };
 
     // Load the YouTube iframe API asynchronously
     var tag = document.createElement('script');
